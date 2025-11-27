@@ -2,7 +2,7 @@
 
 _Unleash Game Insights, Empower Your Victory Journey_
 
-![last commit](https://img.shields.io/badge/last%20commit-august-blue)
+![last commit](https://img.shields.io/badge/last%20commit-november-blue)
 ![vue](https://img.shields.io/badge/vue-46.6%25-brightgreen)
 ![languages](https://img.shields.io/badge/languages-4-blue)
 
