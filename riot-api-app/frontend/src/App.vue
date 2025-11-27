@@ -24,7 +24,13 @@
 </template>
 
 <script>
-import { isAuthenticated, getUsernameFromToken, isTokenExpired, setToken, removeToken } from './authHelper.js'
+import {
+  isAuthenticated,
+  getUsernameFromToken,
+  isTokenExpired,
+  setToken,
+  removeToken
+} from './authHelper.js'
 
 export default {
   name: 'App',
@@ -70,70 +76,128 @@ export default {
 </script>
 
 <style scoped>
+#app {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #7f5af0, #4433a9 35%, #1e1b4b 80%);
+  color: #0f172a;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* NAVBAR */
+
 .navbar {
-  background: white;
-  padding: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-bottom: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(16px);
+  background: linear-gradient(
+    to right,
+    rgba(15, 23, 42, 0.45),
+    rgba(30, 64, 175, 0.3)
+  );
+  border-bottom: 1px solid rgba(148, 163, 184, 0.4);
 }
 
 .nav-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0.85rem 1.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .nav-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #667eea;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #e5e7eb;
   text-decoration: none;
+}
+
+.nav-brand:hover {
+  color: #ffffff;
 }
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   align-items: center;
 }
 
 .nav-link {
-  color: #333;
+  color: #e5e7eb;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  transition: background 0.3s;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
 }
 
 .nav-link:hover {
-  background: #f8f9fa;
+  background: rgba(15, 23, 42, 0.65);
+  transform: translateY(-1px);
 }
 
 .welcome {
-  color: #666;
-  padding: 0.5rem 1rem;
+  color: #cbd5f5;
+  font-size: 0.95rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.55);
 }
+
+/* MAIN */
 
 .main-content {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  margin: 2.5rem auto 3rem;
+  padding: 0 1.75rem 3rem;
 }
+
+/* BUTTONS */
 
 .btn {
-  background: #6c757d;
-  color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
+  transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease,
+    opacity 0.15s ease;
 }
 
-.btn:hover {
-  background: #5a6268;
+.btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+  box-shadow: none;
+  transform: none;
 }
-</style> 
+
+.btn-secondary {
+  background: linear-gradient(to right, #6b7280, #4b5563);
+  color: #f9fafb;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: linear-gradient(to right, #4b5563, #374151);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 35px rgba(15, 23, 42, 0.4);
+}
+
+@media (max-width: 640px) {
+  .nav-content {
+    padding-inline: 1.1rem;
+  }
+
+  .welcome {
+    display: none;
+  }
+}
+</style>
