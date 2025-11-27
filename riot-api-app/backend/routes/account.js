@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { jsonResponse, normalizeRegionalHost, normalizePlatformHost } = require('../utils');
 const checkLogin = require('../checkLogin');
-const { getChampionName } = require('../championService');
+const { getChampionInfo } = require('../championService');
 
 router.use(checkLogin);
 
@@ -38,13 +38,17 @@ router.get('/by-riot-id', checkLogin, async (req, res) => {
 				const masteryData = await masteryResponse.json();
 				const topChampions = masteryData.slice(0, 3);
 
-				championMastery = await Promise.all(topChampions.map(async (mastery) => ({
-					championId: mastery.championId,
-					championName: await getChampionName(mastery.championId),
-					championPoints: mastery.championPoints,
-					championLevel: mastery.championLevel,
-					lastPlayTime: mastery.lastPlayTime
-				})));
+				championMastery = await Promise.all(topChampions.map(async (mastery) => {
+					const info = await getChampionInfo(mastery.championId);
+					return {
+						championId: mastery.championId,
+						championName: info.name,
+						championIcon: info.icon,
+						championPoints: mastery.championPoints,
+						championLevel: mastery.championLevel,
+						lastPlayTime: mastery.lastPlayTime
+					};
+				}));
 			}
 		} catch (masteryError) {
 			console.error('Champion mastery fetch failed:', masteryError.message);

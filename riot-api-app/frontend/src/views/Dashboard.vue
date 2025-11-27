@@ -40,9 +40,14 @@
       <h3>Top Champion Masteries</h3>
       <div class="mastery-list">
         <div class="mastery-item" v-for="champ in result.data.championMastery" :key="champ.championId">
-          <div class="data-item"><span class="data-label">Champion:</span><span class="data-value">{{ champ.championName }} ({{ champ.championId }})</span></div>
-          <div class="data-item"><span class="data-label">Level:</span><span class="data-value">{{ champ.championLevel }}</span></div>
-          <div class="data-item"><span class="data-label">Points:</span><span class="data-value">{{ champ.championPoints.toLocaleString() }}</span></div>
+          <div class="mastery-left">
+            <img v-if="champ.championIcon" :src="champ.championIcon" :alt="champ.championName" class="champion-icon" />
+          </div>
+          <div class="mastery-info">
+            <div class="data-item"><span class="data-label">Champion:</span><span class="data-value">{{ champ.championName }} ({{ champ.championId }})</span></div>
+            <div class="data-item"><span class="data-label">Level:</span><span class="data-value">{{ champ.championLevel }}</span></div>
+            <div class="data-item"><span class="data-label">Points:</span><span class="data-value">{{ champ.championPoints.toLocaleString() }}</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -88,5 +93,7 @@ export default {
 <style scoped>
 .section-title { color: white; margin-bottom: 15px; font-size: 20px; }
 .mastery-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.mastery-item { padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); }
+.mastery-item { display: flex; gap: 16px; align-items: center; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+.champion-icon { width: 72px; height: 72px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.6); object-fit: cover; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+.mastery-info { flex: 1; }
 </style> 

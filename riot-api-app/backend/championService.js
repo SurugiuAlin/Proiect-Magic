@@ -23,7 +23,11 @@ async function fetchChampionData() {
   const champions = await championsRes.json();
   const map = {};
   Object.values(champions.data).forEach((champion) => {
-    map[String(champion.key)] = champion.name;
+    map[String(champion.key)] = {
+      name: champion.name,
+      alias: champion.id,
+      image: `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/champion/${champion.image.full}`
+    };
   });
 
   championCache.version = latestVersion;
@@ -42,15 +46,22 @@ async function getChampionMap() {
   return fetchChampionData();
 }
 
-async function getChampionName(championId) {
+async function getChampionInfo(championId) {
   try {
     const map = await getChampionMap();
-    return map[String(championId)] || `Champion ${championId}`;
+    const data = map[String(championId)];
+    if (!data) {
+      return { name: `Champion ${championId}`, icon: null };
+    }
+    return {
+      name: data.name,
+      icon: data.image
+    };
   } catch (error) {
-    console.error('Champion name lookup failed:', error.message);
-    return `Champion ${championId}`;
+    console.error('Champion info lookup failed:', error.message);
+    return { name: `Champion ${championId}`, icon: null };
   }
 }
 
-module.exports = { getChampionName };
+module.exports = { getChampionInfo };
 
