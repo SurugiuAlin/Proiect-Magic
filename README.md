@@ -60,11 +60,9 @@ git clone https://github.com/SurugiuAlin/Proiect-Magic
 # 2. Navigate to the project directory
 cd Proiect-Magic
 
-# 3. Install the dependencies
-npm install
+# 3. Install the dependencies for both frontend and backend
+cd riot-api-app\backend && npm install
+cd riot-api-app\frontend && npm install
 
-# 4. Run the project
-npm start
-
-# 5. Run all tests
-npm test
+# 4. Run the project (backend rund on port 5000 and frontend runs on port 3000)
+npm run dev # for both of the backend and frontend)

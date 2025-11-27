@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { jsonResponse, normalizeRegionalHost } = require('../utils');
+const { jsonResponse, normalizeRegionalHost, normalizePlatformHost } = require('../utils');
 const checkLogin = require('../checkLogin');
-const { REGIONAL_ALIAS } = require('../constants');
+const { getChampionName } = require('../championService');
 
 router.use(checkLogin);
 
@@ -26,11 +26,36 @@ router.get('/by-riot-id', checkLogin, async (req, res) => {
 
 		const data = await response.json();
 
+		let championMastery = [];
+		try {
+			const platformHost = normalizePlatformHost(tagLine);
+			const masteryUrl = `https://${platformHost}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${encodeURIComponent(data.puuid)}?count=3`;
+			const masteryResponse = await fetch(masteryUrl, {
+				headers: { 'X-Riot-Token': process.env.RIOT_API_KEY }
+			});
+
+			if (masteryResponse.ok) {
+				const masteryData = await masteryResponse.json();
+				const topChampions = masteryData.slice(0, 3);
+
+				championMastery = await Promise.all(topChampions.map(async (mastery) => ({
+					championId: mastery.championId,
+					championName: await getChampionName(mastery.championId),
+					championPoints: mastery.championPoints,
+					championLevel: mastery.championLevel,
+					lastPlayTime: mastery.lastPlayTime
+				})));
+			}
+		} catch (masteryError) {
+			console.error('Champion mastery fetch failed:', masteryError.message);
+		}
+
 		const responseData = {
 			...data,
 			region: regionalHost,
 			gameName,
-			tagLine
+			tagLine,
+			championMastery
 		};
 
 		return jsonResponse(res, true, 200, responseData, 'Account found successfully');

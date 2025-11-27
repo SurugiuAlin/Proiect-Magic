@@ -26,4 +26,37 @@ const REGIONAL_ALIAS = {
     sea: 'sea'
 };
 
-module.exports = { REGIONAL_ALIAS }; 
+const PLATFORM_ALIAS = {
+    euw: 'euw1',
+    euw1: 'euw1',
+    eu: 'euw1',
+    eune: 'eun1',
+    eun: 'eun1',
+    eun1: 'eun1',
+    eune1: 'eun1',
+    tr: 'tr1',
+    tr1: 'tr1',
+    ru: 'ru',
+    na: 'na1',
+    na1: 'na1',
+    br: 'br1',
+    br1: 'br1',
+    lan: 'la1',
+    la1: 'la1',
+    las: 'la2',
+    la2: 'la2',
+    oce: 'oc1',
+    oc1: 'oc1',
+    kr: 'kr',
+    jp: 'jp1',
+    jp1: 'jp1',
+    sea: 'sea',
+    sg: 'sea',
+    ph: 'sea',
+    th: 'sea',
+    vn: 'sea',
+    tw: 'sea',
+    hk: 'sea'
+};
+
+module.exports = { REGIONAL_ALIAS, PLATFORM_ALIAS };

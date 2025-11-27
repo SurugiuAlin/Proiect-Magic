@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { REGIONAL_ALIAS } = require('./constants');
+const { REGIONAL_ALIAS, PLATFORM_ALIAS } = require('./constants');
 
 function jsonResponse(res, success, status, data = [], message) {
   const response = { success, message }
@@ -43,4 +43,15 @@ function normalizeRegionalHost(input, tagLine = '') {
   return region;
 }
 
-module.exports = { jsonResponse, generateJWT, normalizeRegionalHost }
+function normalizePlatformHost(tagLine = '') {
+  const key = String(tagLine || '').replace('#', '').toLowerCase();
+  const platform = PLATFORM_ALIAS[key];
+
+  if (!platform) {
+    throw new Error(`Unsupported tagLine/platform: ${tagLine}`);
+  }
+
+  return platform;
+}
+
+module.exports = { jsonResponse, generateJWT, normalizeRegionalHost, normalizePlatformHost }

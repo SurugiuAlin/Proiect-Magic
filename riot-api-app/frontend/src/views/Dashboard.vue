@@ -35,6 +35,17 @@
         <div class="data-item"><span class="data-label">tagLine:</span><span class="data-value">{{ result.data.tagLine }}</span></div>
       </div>
     </div>
+
+    <div v-if="result?.data?.championMastery?.length" class="card">
+      <h3>Top Champion Masteries</h3>
+      <div class="mastery-list">
+        <div class="mastery-item" v-for="champ in result.data.championMastery" :key="champ.championId">
+          <div class="data-item"><span class="data-label">Champion:</span><span class="data-value">{{ champ.championName }} ({{ champ.championId }})</span></div>
+          <div class="data-item"><span class="data-label">Level:</span><span class="data-value">{{ champ.championLevel }}</span></div>
+          <div class="data-item"><span class="data-label">Points:</span><span class="data-value">{{ champ.championPoints.toLocaleString() }}</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -76,4 +87,6 @@ export default {
 
 <style scoped>
 .section-title { color: white; margin-bottom: 15px; font-size: 20px; }
+.mastery-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.mastery-item { padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); }
 </style> 
