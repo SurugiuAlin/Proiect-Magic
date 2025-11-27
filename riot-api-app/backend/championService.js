@@ -63,5 +63,15 @@ async function getChampionInfo(championId) {
   }
 }
 
-module.exports = { getChampionInfo };
+async function getDataDragonVersion() {
+  const isFresh = championCache.version && Date.now() - championCache.fetchedAt < DAY_IN_MS;
+  if (isFresh) {
+    return championCache.version;
+  }
+
+  await fetchChampionData();
+  return championCache.version;
+}
+
+module.exports = { getChampionInfo, getDataDragonVersion };
 

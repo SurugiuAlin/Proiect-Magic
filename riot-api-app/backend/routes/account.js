@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { jsonResponse, normalizeRegionalHost, normalizePlatformHost } = require('../utils');
 const checkLogin = require('../checkLogin');
-const { getChampionInfo } = require('../championService');
+const { getChampionInfo, getDataDragonVersion } = require('../championService');
 
 router.use(checkLogin);
 
@@ -27,6 +27,7 @@ router.get('/by-riot-id', checkLogin, async (req, res) => {
 		const data = await response.json();
 
 		let championMastery = [];
+		let summonerProfile = null;
 		try {
 			const platformHost = normalizePlatformHost(tagLine);
 			const masteryUrl = `https://${platformHost}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${encodeURIComponent(data.puuid)}?count=3`;
@@ -50,6 +51,25 @@ router.get('/by-riot-id', checkLogin, async (req, res) => {
 					};
 				}));
 			}
+
+			const summonerUrl = `https://${platformHost}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${encodeURIComponent(data.puuid)}`;
+			const summonerResponse = await fetch(summonerUrl, {
+				headers: { 'X-Riot-Token': process.env.RIOT_API_KEY }
+			});
+
+			if (summonerResponse.ok) {
+				const summoner = await summonerResponse.json();
+				const version = await getDataDragonVersion();
+
+				summonerProfile = {
+					name: summoner.name,
+					summonerLevel: summoner.summonerLevel,
+					profileIconId: summoner.profileIconId,
+					profileIconUrl: version
+						? `https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${summoner.profileIconId}.png`
+						: null
+				};
+			}
 		} catch (masteryError) {
 			console.error('Champion mastery fetch failed:', masteryError.message);
 		}
@@ -59,7 +79,8 @@ router.get('/by-riot-id', checkLogin, async (req, res) => {
 			region: regionalHost,
 			gameName,
 			tagLine,
-			championMastery
+			championMastery,
+			summonerProfile
 		};
 
 		return jsonResponse(res, true, 200, responseData, 'Account found successfully');

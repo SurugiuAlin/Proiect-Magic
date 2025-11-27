@@ -29,10 +29,16 @@
 
     <div v-if="result" class="card">
       <h3>Account Info</h3>
-      <div class="data-display">
-        <div class="data-item"><span class="data-label">puuid:</span><span class="data-value">{{ result.data.puuid }}</span></div>
-        <div class="data-item"><span class="data-label">gameName:</span><span class="data-value">{{ result.data.gameName }}</span></div>
-        <div class="data-item"><span class="data-label">tagLine:</span><span class="data-value">{{ result.data.tagLine }}</span></div>
+      <div class="account-info">
+        <div class="account-icon" v-if="result.data.summonerProfile?.profileIconUrl">
+          <img :src="result.data.summonerProfile.profileIconUrl" :alt="result.data.summonerProfile?.name || result.data.gameName" />
+          <span class="account-level">Level {{ result.data.summonerProfile?.summonerLevel ?? '—' }}</span>
+        </div>
+        <div class="data-display">
+          <div class="data-item"><span class="data-label">puuid:</span><span class="data-value">{{ result.data.puuid }}</span></div>
+          <div class="data-item"><span class="data-label">gameName:</span><span class="data-value">{{ result.data.gameName }}</span></div>
+          <div class="data-item"><span class="data-label">tagLine:</span><span class="data-value">{{ result.data.tagLine }}</span></div>
+        </div>
       </div>
     </div>
 
@@ -96,4 +102,9 @@ export default {
 .mastery-item { display: flex; gap: 16px; align-items: center; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
 .champion-icon { width: 72px; height: 72px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.6); object-fit: cover; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
 .mastery-info { flex: 1; }
+.account-info { display: flex; gap: 20px; align-items: center; }
+.account-icon { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.account-icon img { width: 86px; height: 86px; border-radius: 18px; border: 2px solid rgba(255,255,255,0.7); box-shadow: 0 8px 20px rgba(0,0,0,0.25); object-fit: cover; }
+.account-level { font-weight: 600; color: rgba(255,255,255,0.85); background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 999px; font-size: 0.9rem; }
+.account-info .data-display { flex: 1; }
 </style> 
